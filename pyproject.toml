@@ -1,0 +1,45 @@
+[build-system]
+requires = ['setuptools']
+build-backend = 'setuptools.build_meta'
+
+
+[project]
+name = 'TkApp'
+version = '1.0.0'
+description = 'This library can assist in GUI development using Tkinter.'
+
+readme = 'README.md'
+license = {file='LICENSE'}
+
+requires-python = '>=3.13'
+dependencies = [
+   'CodingTools@git+https://github.com/AtoKashinoki/CodingTools.git@v3.5.11',
+]
+
+authors = [
+   {name='AtoKashinoki', email='atokashinoki@gmail.com'}
+]
+classifiers = [
+   'Development Status :: 3 - Alpha',
+   'Intended Audience :: Developers',
+   'License :: OSI Approved :: MIT License',
+   'Natural Language :: English',
+   'Operating System :: OS Independent',
+   'Programming Language :: Python :: 3.8',
+   'Programming Language :: Python :: 3.9',
+   'Programming Language :: Python :: 3.10',
+   'Programming Language :: Python :: 3.11',
+   'Programming Language :: Python :: 3.12',
+   'Programming Language :: Python :: 3.13',
+   'Programming Language :: Python :: Implementation :: CPython',
+   'Topic :: Software Development :: Libraries :: Python Modules',
+   'Topic :: Utilities',
+]
+
+
+[project.urls]
+'Homepage' = 'https://github.com/AtoKashinoki/CodingTools'
+'Bug Traker' = 'https://github.com/AtoKashinoki/CodingTools/issues'
+
+
+[project.scripts]
