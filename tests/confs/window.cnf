@@ -1,0 +1,4 @@
+title = 'Title'
+icon = None
+geometry = '900x600'
+resizable = (False, False)

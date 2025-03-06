@@ -4,8 +4,8 @@ build-backend = 'setuptools.build_meta'
 
 
 [project]
-name = 'TkApp'
-version = '1.0.0'
+name = 'tkapp'
+version = '1.1.0'
 description = 'This library can assist in GUI development using Tkinter.'
 
 readme = 'README.md'
@@ -13,7 +13,7 @@ license = {file='LICENSE'}
 
 requires-python = '>=3.13'
 dependencies = [
-   'CodingTools@git+https://github.com/AtoKashinoki/CodingTools.git@v3.5.11',
+   'CodingTools@git+https://github.com/AtoKashinoki/CodingTools.git@CodingTools3',
 ]
 
 authors = [

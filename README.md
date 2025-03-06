@@ -7,7 +7,9 @@ TkApp
 
 - \_\_init__.py<br>
 Main tools
-  - None
+  - tkinter.ttk module
+  - Application.Application class
+  - Page.PageSkeleton class
 
 
 - Application.py<br>
@@ -15,9 +17,14 @@ Application system tools
   - Application class
 
 
-- Widget.py<br>
-Widget tools
-  - Page class
+- AppAttribute.py<br>
+Application attribute access system
+  - Window
+
+
+- Page.py<br>
+Application page system
+  - Page system class
 
 
 # Using
