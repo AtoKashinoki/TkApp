@@ -1,7 +1,7 @@
 
 
 from tkinter import ttk
-from tkapp.Application import Application
+from tkapp.Application import ApplicationSkeleton
 from tkapp.Page import PageSkeleton
 
 
@@ -14,7 +14,7 @@ class Sub(PageSkeleton):
         self.name = f"SubPage{Sub.initial_count}"
         return
 
-    def __page_create__(self, app: Application) -> None:
+    def __page_create__(self, app: ApplicationSkeleton) -> None:
         print(app.pages)
         ttk.Button(
             self, text="Return",
@@ -33,7 +33,7 @@ class Main(PageSkeleton):
         self.name = "MainPage"
         return
 
-    def __page_create__(self, app: Application) -> None:
+    def __page_create__(self, app: ApplicationSkeleton) -> None:
         print(app.pages)
         note = ttk.Notebook(self, **self.size)
 
@@ -42,7 +42,10 @@ class Main(PageSkeleton):
         frame1.pack(anchor="nw")
 
         frame2 = ttk.Frame(self, **self.size)
-        ttk.Label(frame2, text="Main page note2").pack(anchor="nw")
+        ttk.Button(
+            frame2, text="Restart",
+            command=lambda : app.reboot()
+        ).pack(anchor="nw")
         frame2.pack(anchor="nw")
 
         frame3 = ttk.Frame(self, **self.size)
@@ -64,6 +67,21 @@ class Main(PageSkeleton):
     ...
 
 
+class Application(ApplicationSkeleton):
+
+    def __init__(self):
+        ApplicationSkeleton.__init__(self)
+        return
+
+    def __init_pages__(self) -> None:
+        self.set_main_page(Main)
+        return
+
+    ...
+
+
+
+
 if __name__ == '__main__':
-    Application(Main).mainloop()
+    Application().mainloop()
     ...

@@ -19,6 +19,6 @@ from tkinter import ttk
 """ tkapp """
 
 
-from .Application import Application
+from .Application import ApplicationSkeleton
 from .Page import PageSkeleton
 

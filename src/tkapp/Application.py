@@ -16,7 +16,9 @@ import tkinter
 from .AppAttribute import Window
 from CodingTools.Config import ConfigManager
 
-from .Page import Application as ApplicationSkeleton, PageSkeleton
+from .Page import Application as Attributes, PageSkeleton
+from CodingTools.Inheritance import InheritanceSkeleton
+from abc import abstractmethod
 
 
 """
@@ -27,7 +29,7 @@ from .Page import Application as ApplicationSkeleton, PageSkeleton
 """ Application class """
 
 
-class Application(ApplicationSkeleton):
+class ApplicationSkeleton(Attributes, InheritanceSkeleton):
     """
         Tkinter Application class
 
@@ -40,33 +42,36 @@ class Application(ApplicationSkeleton):
     """ Initializer """
     def __init__(
             self,
-            _main_page: type[PageSkeleton],
-            root: tkinter.Tk = tkinter.Tk(),
+            root_type: type[tkinter.Tk] = tkinter.Tk,
+            use_config: bool = True,
             config_dir: str = os.path.join(".", "confs"),
     ):
         """ Initialize tk and values """
 
         """ Tkinter """
-        self.__master = root
+        self.__root_type = root_type
+        self.__master = root_type()
         self.__window = Window(self.__master)
+        self.__reboot_flag = False
 
         """ config """
-        if config_dir == os.path.join(".", "confs"): mkdir(config_dir)
+        self.__use_config = use_config
         self.__config_dir = config_dir
-        window_cnf = ConfigManager(
-            os.path.join(config_dir, self.__WIN_CNF_NAME)
-        )
-        window_cnf.setattr(self.__window, self.__window.keys())
+        self.load_config()
+        self.save_config()
 
         """ page """
         self.__current_page_key = "Main"
-        self.__pages = {
-            self.__current_page_key: _main_page(self.__master, self)
-        }
+        self.__pages = {"Main": None}
+        self.__init_pages__()
 
         return
 
     """ Tkinter """
+    __root_type: type[tkinter.Tk] = tkinter.Tk
+    @property
+    def root_type(self) -> type[tkinter.Tk]: return self.__root_type
+
     __master: tkinter.Tk
     @property
     def master(self) -> tkinter.Tk: return self.__master
@@ -74,6 +79,10 @@ class Application(ApplicationSkeleton):
     __window: Window
     @property
     def window(self) -> Window: return self.__window
+
+    __reboot_flag: bool
+    @property
+    def reboot_flag(self) -> bool: return self.__reboot_flag
 
     @property
     def size_tuple(self) -> tuple:
@@ -92,16 +101,54 @@ class Application(ApplicationSkeleton):
         """ Run application """
         self.__page_run()
         self.__master.mainloop()
+
+        """ Reboot """
+        if self.reboot_flag:
+            self.__reboot_flag = False
+            self.load_config()
+            self.__master.destroy()
+            ApplicationSkeleton.__init__(
+                self,
+                self.__root_type,
+                self.__use_config,
+                self.__config_dir,
+            )
+            self.mainloop()
+            ...
+
         self.save_config()
         return 0
 
+    def reboot(self) -> None:
+        """ Restart application """
+        self.__master.quit()
+        self.__reboot_flag = True
+        return
+
     """ config """
+    __use_config: bool
+    @property
+    def use_config(self) -> bool: return self.__use_config
+
     __config_dir: str
     @property
     def config_dir(self) -> str: return self.__config_dir
 
+    def load_config(self) -> None:
+        """ Load configs """
+        if not self.__use_config: return
+
+        if self.__config_dir == os.path.join(".", "confs"): mkdir(self.__config_dir)
+        window_cnf = ConfigManager(
+            os.path.join(self.__config_dir, self.__WIN_CNF_NAME)
+        )
+        window_cnf.setattr(self.__window, self.__window.keys())
+        return
+
     def save_config(self) -> None:
         """ Save configs """
+        if not self.__use_config: return
+
         window_cnf = ConfigManager(
             os.path.join(self.config_dir, self.__WIN_CNF_NAME)
         )
@@ -114,13 +161,16 @@ class Application(ApplicationSkeleton):
     @property
     def current_page_key(self) -> str: return self.__current_page_key
 
-    __pages: dict[str, PageSkeleton]
+    __pages: dict[str, PageSkeleton | None]
     @property
     def pages(self) -> dict[str, PageSkeleton]: return self.__pages
 
     def __page_run(self) -> None:
         """ Create and draw page """
-        page: PageSkeleton = self.__pages[self.__current_page_key]
+        page = self.__pages[self.__current_page_key]
+        if page is None: raise TypeError(
+            "Main page is not setting. Execute self.set_main_page function."
+        )
         page.__create__()
         page.__draw__()
         return
@@ -137,6 +187,15 @@ class Application(ApplicationSkeleton):
         if del_pre_page: self.del_page(pre_page_key)
         self.__page_run()
         pre_page.place_forget()
+        return
+
+    def set_main_page(
+            self,
+            _page: type[PageSkeleton],
+    ):
+        """ Set main page """
+        self.__pages[self.__current_page_key] =\
+            _page(self.__master, self)
         return
 
     def add_page(
@@ -180,5 +239,10 @@ class Application(ApplicationSkeleton):
             self.__new_page_run(_page_key, del_pre_page=del_pre_page)
             return True
         return False
+
+    @abstractmethod
+    def __init_pages__(self) -> None:
+        """ Page initializer """
+        return
 
     ...
