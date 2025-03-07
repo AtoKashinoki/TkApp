@@ -63,7 +63,6 @@ class ApplicationSkeleton(Attributes, InheritanceSkeleton):
         """ page """
         self.__current_page_key = "Main"
         self.__pages = {"Main": None}
-        self.__init_pages__()
 
         return
 
@@ -99,6 +98,7 @@ class ApplicationSkeleton(Attributes, InheritanceSkeleton):
 
     def mainloop(self) -> int:
         """ Run application """
+        self.__init_pages__()
         self.__page_run()
         self.__master.mainloop()
 
