@@ -26,4 +26,7 @@ from tkinter.ttk import *
 
 from .Application import ApplicationSkeleton
 from .Page import PageSkeleton
+from .Widget import (
+    Frame
+)
 
