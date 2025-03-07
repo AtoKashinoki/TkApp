@@ -16,7 +16,7 @@ import tkinter
 from .AppAttribute import Window
 from CodingTools.Config import ConfigManager
 
-from .Page import Application as Attributes, PageSkeleton
+from .Page import Application as Attributes, PageSkeleton, call_create, display
 from CodingTools.Inheritance import InheritanceSkeleton
 from abc import abstractmethod
 
@@ -171,8 +171,8 @@ class ApplicationSkeleton(Attributes, InheritanceSkeleton):
         if page is None: raise TypeError(
             "Main page is not setting. Execute self.set_main_page function."
         )
-        page.__create__()
-        page.__draw__()
+        call_create(page)
+        display(page)
         return
 
     def __new_page_run(

@@ -155,16 +155,6 @@ class PageSkeleton(tkinter.Frame, InheritanceSkeleton):
         """ Page setup function """
         return
 
-    def __create__(self) -> "PageSkeleton":
-        """ Page create function """
-        self.__page_create__(self.__application)
-        return self
-
-    def __draw__(self) :
-        """ Page draw function """
-        self.place(x=0, y=0)
-        return
-
     """ page name """
     __name: str | None
     @property
@@ -183,3 +173,17 @@ class PageSkeleton(tkinter.Frame, InheritanceSkeleton):
         return f"{self.__name}"
 
     ...
+
+
+""" page calling system """
+
+
+def call_create(_page: PageSkeleton) -> None:
+    """ Page create function """
+    _page.__page_create__(_page.application)
+    return
+
+def display(_page: PageSkeleton) -> None :
+    """ Page draw function """
+    _page.place(x=0, y=0)
+    return
