@@ -1,8 +1,10 @@
 
 
+import tkinter
 import tkapp
+from tkapp.Widget import Frame
 
 
 if __name__ == '__main__':
-    tkapp.
+    print(type(Frame(tkinter.Tk()).master))
     ...
