@@ -25,6 +25,8 @@ Application attribute access system
 - Page.py<br>
 Application page system
   - Page system class
+  - call_create function
+  - display function
 
 
 # Using
